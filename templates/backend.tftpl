@@ -7,3 +7,14 @@ terraform {
     dynamodb_table = "${ddb_table}"
   }
 }
+
+data "terraform_remote_state" "bootstrap" {
+  backend  = "s3"
+  config = {
+    region         = "${aws_region}"
+    bucket         = "${aws_bucket_name}"
+    key            = "terraform/stacks/by-id/${project_name}/terraform.tfstate"
+    encrypt        = true
+    dynamodb_table = "${ddb_table}"
+  }
+}

@@ -34,6 +34,6 @@ resource "local_file" "tf_backend" {
     project_name    = var.project_name
     ddb_table       = module.dynamodb_table.output["id"]
   })
-  filename = "backend.tf.generated"
+  filename = "${path.root}/backend.tf.generated"
 }
 

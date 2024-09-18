@@ -1,6 +1,14 @@
-output "out" {
+output "summary" {
   description = "Resource creation summary"
   value       = module.s3_bucket.info
+}
+
+output "s3_out" {
+  value = module.s3_bucket.out
+}
+
+output "ddb_out" {
+  value = module.dynamodb_table.output
 }
 
 output "info" {
@@ -10,34 +18,6 @@ output "info" {
       1. Copy `backend.tf.generated` to your terraform root module
       2. Rename the file to `backend.tf`
       3. Run `terraform init -migrate-state`
+      4. Reference the `data.terraform_remote_state.bootstrap` to access the bootstrap outputs
   EOT
 }
-# output "bucket" {
-#   description = "Map with s3 bucket-specific information"
-#   value = zipmap(
-#     ["name", "arn"],
-#     [
-#       element(aws_s3_bucket.terraform-state[*], 0).id,
-#       element(aws_s3_bucket.terraform-state[*], 0).arn,
-#     ]
-#   )
-# }
-
-# output "dynamodb" {
-#   description = "Map with dynamodb table-specific information"
-#   value = zipmap(
-#     ["name", "arn"],
-#     [element(aws_dynamodb_table.terraform-state[*], 0).id, element(aws_dynamodb_table.terraform-state[*], 0).arn],
-#   )
-# }
-
-# output "s3_object" {
-#   description = "Complete configuration of the S3 bucket created"
-#   value = {
-#     bucket         = element(aws_s3_bucket.terraform-state[*], 0).id
-#     region         = element(aws_s3_bucket.terraform-state[*], 0).region
-#     key            = var.s3.bucket_key
-#     encrypt        = var.s3.enable_encryption
-#     dynamodb_table = element(aws_dynamodb_table.terraform-state[*], 0).id
-#   }
-# }
