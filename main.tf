@@ -28,7 +28,7 @@ module "dynamodb_table" {
 }
 
 resource "local_file" "tf_backend" {
-  content = templatefile("./templates/backend.tftpl", {
+  content = templatefile("${path.module}/templates/backend.tftpl", {
     aws_region      = var.provider_aws.region
     aws_bucket_name = module.s3_bucket.out["bucket_id"]
     project_name    = var.project_name
