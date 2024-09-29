@@ -1,0 +1,7 @@
+variable "s3_stub" {
+  type = object({
+    region = optional(string, "${aws_region}")
+    bucket = optional(string, "${aws_bucket_name}")
+    key = optional(string, "terraform/stacks/by-id/${project_name}/terraform.tfstate")
+  })
+}

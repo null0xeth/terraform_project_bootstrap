@@ -4,6 +4,18 @@ variable "project_name" {
   description = "Name of the project using this module"
 }
 
+variable "create_s3_stub" {
+  type        = bool
+  default     = false
+  description = "Whether to create a S3 connection stub"
+}
+
+variable "stub_path" {
+  type        = string
+  default     = null
+  description = "Path where the s3 stub will be saved"
+}
+
 variable "resource_tags" {
   description = "List of resource tags to be added to all created resources"
   type        = map(string)

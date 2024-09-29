@@ -37,3 +37,11 @@ resource "local_file" "tf_backend" {
   filename = "${path.root}/backend.tf.generated"
 }
 
+resource "local_file" "s3_stub" {
+  content = templatefile("${path.module}/templates/stub.tftpl", {
+    aws_region      = var.provider_aws.region
+    aws_bucket_name = module.s3_bucket.out["bucket_id"]
+    project_name    = var.project_name
+  })
+  filename = "${var.stub_path}/s3_stub.tf"
+}
