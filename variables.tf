@@ -4,16 +4,22 @@ variable "project_name" {
   description = "Name of the project using this module"
 }
 
+variable "create_remote_state" {
+  type        = bool
+  default     = false
+  description = "Whether to create a terraform remote state object"
+}
+
 variable "create_s3_stub" {
   type        = bool
   default     = false
   description = "Whether to create a S3 connection stub"
 }
 
-variable "stub_path" {
+variable "root_path" {
   type        = string
   default     = null
-  description = "Path where the s3 stub will be saved"
+  description = "Path to the root folder where the generated files will be saved"
 }
 
 variable "resource_tags" {
@@ -34,7 +40,7 @@ variable "provider_aws" {
 
 variable "s3_config" {
   type = object({
-    bucket           = optional(string, "clucker-bucket")
+    bucket           = optional(string) #, "vault-engines-dynamic-aws")
     enable_logging   = optional(bool, false)
     force_destroy    = optional(bool, true)
     object_ownership = optional(string, "BucketOwnerPreferred")
@@ -86,7 +92,7 @@ variable "ddb_global" {
 variable "ddb_config" {
   default = {}
   type = object({
-    name = optional(string, "terraform-lock")
+    name = optional(string) #, "terraform-lock")
     sse  = optional(bool, true)
     rcu  = optional(number, 5)
     wcu  = optional(number, 5)
