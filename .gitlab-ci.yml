@@ -5,14 +5,22 @@ stages:
   - deploy
   - release
 
+workflow:
+  rules:
+    - if: "$CI_COMMIT_TAG" # Skip the pipeline for tag creation
+      when: never
+    - if: "$CI_COMMIT_BRANCH =~ /^main$|^master$/ && $CI_COMMIT_MESSAGE =~ /^(feat|fix|improv|perf|breaking|milestone|revert|build):/i"
+      when: always # Run the pipeline if the commit is on the main or master branch and includes a relevant commit message
+    - if: '$CI_PIPELINE_SOURCE == "schedule"' # Skip the pipeline for scheduled jobs
+      when: never
+    - when: never # Default rule to skip everything else
+
 include:
   - component: $CI_SERVER_FQDN/components/terraform/terraform-module-registry/fetch-vault-secret@~latest
     inputs:
       vault-path: gitlab/gitlab-token@kv
       vault-secret: GL_TOKEN
   - component: $CI_SERVER_FQDN/components/gitlab/semantic-release/semantic-release@~latest
-    inputs:
-      stage: preparation
   - component: $CI_SERVER_FQDN/components/terraform/terraform-module-registry/build@~latest
     inputs:
       stage: build
