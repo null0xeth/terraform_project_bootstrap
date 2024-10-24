@@ -12,7 +12,7 @@ include:
       vault-secret: GL_TOKEN
   - component: $CI_SERVER_FQDN/components/gitlab/semantic-release/semantic-release@~latest
     inputs:
-      stage: .pre
+      stage: preparation
   - component: $CI_SERVER_FQDN/components/terraform/terraform-module-registry/build@~latest
     inputs:
       stage: build

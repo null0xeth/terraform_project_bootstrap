@@ -1,0 +1,114 @@
+branches: ["main", "master"]
+tagFormat: "${version}"
+preset: "conventionalcommits"
+
+verifyConditions:
+  - "@semantic-release/changelog"
+  - "@semantic-release/git"
+  - "@semantic-release/gitlab"
+
+analyzeCommits:
+  - path: "@semantic-release/commit-analyzer"
+    releaseRules:
+      - type: milestone
+        release: major
+      - type: breaking
+        release: minor
+      - type: build
+        release: patch
+      - type: chore # Other changes that don't modify src or test files
+        release: false
+      - type: ci # Changes to our CI configuration files and scripts
+        release: false
+      - type: docs # Documentation only changes
+        release: false
+      - type: feat # A new feature
+        release: minor
+      - type: fix # A bug fix
+        release: patch
+      - type: perf # A code change that improves performance
+        release: patch
+      - type: refactor
+        release: false
+      - type: revert # Reverts a previous commit
+        release: patch
+      - type: style # Changes that do not affect the meaning of the code
+        release: false
+      - type: test # Adding missing tests or correcting existing tests
+        release: false
+      - type: improv
+        release: patch
+      - type: deps # Dependency changes/updates/downgrades
+        release: false
+
+generateNotes:
+  - path: "@semantic-release/release-notes-generator"
+    writerOpts:
+      groupBy: "type"
+      commitGroupsSort: "title"
+      commitsSort: "header"
+    linkCompare: true
+    linkReferences: true
+    presetConfig:
+      types:
+        - type: "milestone"
+          section: "✨ Milestone"
+          hidden: false
+        - type: "breaking"
+          section: "🧨 Breaking changes!"
+          hidden: false
+        - type: "build"
+          section: "🦊 CI/CD"
+          hidden: false
+        - type: "chore"
+          section: "📦 Other"
+          hidden: false
+        - type: "ci"
+          section: "🦊 CI/CD"
+          hidden: false
+        - type: "docs"
+          section: "📔 Docs"
+          hidden: false
+        - type: "feat"
+          section: "🚀 Features"
+          hidden: false
+        - type: "fix"
+          section: "🛠 Fixes"
+          hidden: false
+        - type: "perf"
+          section: "⏩ Performance"
+          hidden: false
+        - type: "refactor"
+          section: ":scissors: Refactor"
+          hidden: false
+        - type: "revert"
+          section: "👀 Reverts"
+          hidden: false
+        - type: "style"
+          section: "💈 Style"
+          hidden: false
+        - type: "test"
+          section: "🧪 Tests"
+          hidden: false
+        - type: "improv"
+          section: "💎 Improvements"
+          hidden: false
+        - type: "deps"
+          section: "🔩 Dependencies"
+          hidden: false
+
+# Responsible for preparing the release, for example creating or updating files
+# such as package.json, CHANGELOG.md, documentation or compiled assets
+# and pushing a commit.
+prepare:
+  - path: "@semantic-release/exec"
+    cmd: "echo VERSION=${nextRelease.version} >> version.env"
+  - path: "@semantic-release/changelog"
+
+# Responsible for publishing the release.
+publish:
+  - path: "@semantic-release/gitlab"
+
+success: false
+
+fail: false
