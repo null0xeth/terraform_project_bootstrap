@@ -1,10 +1,15 @@
 stages:
+  - preparation
   - build
   - test
   - deploy
   - release
 
 include:
+  - component: $CI_SERVER_FQDN/components/terraform/terraform-module-registry/fetch-vault-secret@~latest
+    inputs:
+      vault-path: gitlab/gitlab-token@kv
+      vault-secret: GL_TOKEN
   - component: $CI_SERVER_FQDN/components/gitlab/semantic-release/semantic-release@~latest
     inputs:
       stage: .pre
