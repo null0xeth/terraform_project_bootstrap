@@ -14,7 +14,7 @@ workflow:
     - if: '$CI_PIPELINE_SOURCE == "schedule"' # Skip the pipeline for scheduled jobs
       when: never
     - when: never # Default rule to skip everything else
-
+#
 include:
   - component: $CI_SERVER_FQDN/components/terraform/terraform-module-registry/fetch-vault-secret@~latest
     inputs:
